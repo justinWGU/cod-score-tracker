@@ -1,6 +1,7 @@
 from take_screenshot import take_screenshot
 from extract_scores import extract_scores
 import time
+from ..models import Match
 
 def update_scores():
     """
