@@ -18,7 +18,7 @@ def get_stream_url(youtube_url):
         print("Failed to extract stream URL:", e.stderr)
         return None
 
-def take_screenshot_from_stream(stream_url, filename='screenshot.jpg'):
+def take_screenshot_from_stream(stream_url, filename='static/screenshot.jpg'):
     cap = cv2.VideoCapture(stream_url)
 
     if not cap.isOpened():

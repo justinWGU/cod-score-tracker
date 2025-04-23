@@ -3,7 +3,10 @@ from extract_scores import extract_scores
 import time
 
 def update_scores():
-    """Every 5 seconds, save new scores to DB."""
+    """
+    Every 5 seconds, take a new screenshot, extract scores, and save new
+    scores to DB.
+    """
 
     # continuously run program
     while True:

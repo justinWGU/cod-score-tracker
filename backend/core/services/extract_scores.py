@@ -12,7 +12,7 @@ def extract_scores():
     client = genai.Client(api_key=os.getenv('GEMINI_KEY'))
 
     # take_screenshot()
-    file = client.files.upload(file='screenshot.jpg')
+    file = client.files.upload(file='static/screenshot.jpg')
 
     # prompt gemini model to identify scores and output them in json
     prompt = ('These are screenshots from a competitive e-sports game. Each '
