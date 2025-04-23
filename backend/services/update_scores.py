@@ -1,35 +1,24 @@
 from take_screenshot import take_screenshot
-from dotenv import load_dotenv
-import os
-from google import genai
-
-
-load_dotenv()
+from extract_scores import extract_scores
+import time
 
 def update_scores():
-    """"""
-    # init gemini client
-    client = genai.Client(api_key=os.getenv('GEMINI_KEY'))
+    """Every 5 seconds, save new scores to DB."""
 
-    # take_screenshot()
-    file = client.files.upload(file='screenshot.jpg')
+    # continuously run program
+    while True:
+        take_screenshot()
+        scores = extract_scores()
 
-    # prompt gemini model to identify scores and output them in json
-    prompt = ('These are screenshots from a competitive e-sports game. Each '
-              'team\'s score should appear at the top of each image. Your job is '
-              'to output the scores that you see in the following JSON {'
-              'format}. TeamLeft is the team whose score appears on the left. '
-              'TeamRight is the team whose score appears on the right. $format = '
-              '{"teamLeft": $SCORE, "teamRight": $SCORE}')
-    response = client.models.generate_content(
-        model='gemini-1.5-flash',
-        contents=[file, prompt])
-    client.files.delete(name=file.name)
+        # save scores to DB
+        scores_left = scores.get('teamLeft')
+        scores_right = scores.get('teamRight')
 
-    # remove only the json format from response
-    start = response.text.find('{')
-    end = response.text.find('}')
-    json = response.text[start:end + 1]
-    print('Response:', json)
+        # save updated match scores in DB
+        match = Match.objects.get(id=1)
+        match.leftTeamScore = scores_left
+        match.rightTeamScore = scores_right
+        match.save()
 
-    return json
+        # wait 5 secs
+        time.sleep(10)
