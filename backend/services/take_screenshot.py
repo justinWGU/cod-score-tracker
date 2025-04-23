@@ -36,12 +36,23 @@ def take_screenshot_from_stream(stream_url, filename='screenshot.jpg'):
         print("Failed to capture frame.")
         return False
 
-if __name__ == "__main__":
-    youtube_live_url = os.getenv("STREAM_URL")
 
+def take_screenshot():
+    youtube_live_url = os.getenv("STREAM_URL")
     print("Extracting stream URL...")
     direct_stream_url = get_stream_url(youtube_live_url)
 
     if direct_stream_url:
         print("Capturing screenshot...")
         take_screenshot_from_stream(direct_stream_url)
+
+
+# if __name__ == "__main__":
+#     youtube_live_url = os.getenv("STREAM_URL")
+#
+#     print("Extracting stream URL...")
+#     direct_stream_url = get_stream_url(youtube_live_url)
+#
+#     if direct_stream_url:
+#         print("Capturing screenshot...")
+#         take_screenshot_from_stream(direct_stream_url)
