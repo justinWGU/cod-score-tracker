@@ -10,7 +10,7 @@ from core.services.update_scores import update_scores
 # Create your views here.
 
 @api_view(['GET'])
-def update_scores_view(request):
+def update_scores_view(request: Request):
     """
     Starts continuous service that updates game scores in the DB.
 
@@ -19,22 +19,16 @@ def update_scores_view(request):
     and is only for development purposes.
     """
 
+    # TODO: remove unnecessary conversions & switch to .query_params
+    # cast query params to python DTs
+    test = request.GET['test'] == 'true'
+    live = request.GET['live'] == 'true'
+    match_id = int(request.GET['id'])
+
     try:
-        update_scores()
-    except Exception as e:
-        return Response(data={'error': e}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-@api_view(['GET'])
-def update_scores_view_test(request):
-    """
-    Starts continuous service that updates game scores in the DB w/out
-    using the actual Gemini API to prevent overuse of API calls.
-
-    See update_scores_view for explanation about missing return statement on success.
-    """
-    try:
-        update_scores(test=True)
+        print("updating scores")
+        update_scores(test=test, match_id=match_id, live=live)
+        return Response(status=status.HTTP_200_OK)
     except Exception as e:
         return Response(data={'error': e}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -44,7 +38,12 @@ def get_scores(request: Request):
     """Retrieve current scores from the DB given match id."""
 
     try:
-        match = Match.objects.get(id=request.GET['id']) # obtain id from query param
+        # convert match_id from query param to an int
+        # TODO: add more specific error handling for None type
+        match_id = request.query_params.get('id')
+#        print('match_id: ', match_id)
+
+        match = Match.objects.get(id=match_id)
         serializer = MatchSerializer(match)
         data = serializer.data
     except Match.DoesNotExist:
