@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def get_stream_url(youtube_url):
+def get_url(youtube_url):
     print(f"Extracting stream URL from {youtube_url}...")
     try:
         result = subprocess.run(
@@ -21,7 +21,7 @@ def get_stream_url(youtube_url):
         return None
 
 # TODO: change fixed directory
-def take_screenshot_from_stream(stream_url, frame=None, filename='/Users/justin/projects/score-tracker/backend/core/services/static/screenshot.jpg'):
+def take_screenshot(stream_url, frame=None, filename='/Users/justin/projects/score-tracker/backend/core/services/static/screenshot.jpg'):
     print("Capturing screenshot...")
     cap = cv2.VideoCapture(stream_url)
 
@@ -55,8 +55,8 @@ if __name__ == "__main__":
 
 
     print("Extracting stream URL...")
-    direct_stream_url = get_stream_url(youtube_live_url)
+    direct_stream_url = get_url(youtube_live_url)
 
     if direct_stream_url:
         print("Capturing screenshot...")
-        take_screenshot_from_stream(direct_stream_url)
+        take_screenshot(direct_stream_url)
