@@ -2,6 +2,7 @@ import os
 import random
 from dotenv import load_dotenv
 from google import genai
+from ast import literal_eval
 
 
 load_dotenv()
@@ -16,30 +17,26 @@ def extract_scores(test=False):
     # init gemini client
     client = genai.Client(api_key=os.getenv('GEMINI_KEY'))
 
-    file = client.files.upload(file='static/screenshot.jpg')
+    # TODO: refactor static directory
+    file = client.files.upload(file='/Users/justin/projects/score-tracker/backend/core/services/static/test_screenshot.png')
 
     # prompt gemini model to identify scores and output them in json
     prompt = ('These are screenshots from a competitive e-sports game. Each '
-              'team\'s score should appear at the top of each image. Your job is '
-              'to output the scores that you see as a python dictionary in the '
-              'following {format}. If no scoreboard is currently visible on the '
-              'image, return each team\'s score as Python data type None.'
-              'TeamLeft is the team whose score appears on the left. TeamRight '
-              'is the team whose score appears on the right. '
-              '$format = {teamLeft: $SCORE, teamRight: $SCORE}')
+              'team\'s score should appear at the top of each image. Output the scores as a python dictionary. Name the team on the left team_left and the team on the right team_right. Output the dictionary on one line with no formatting white space. Do not add extra characters. If no scoreboard is currently visible on the '
+              'image, return each team\'s score as Python data type None.')
     response = client.models.generate_content(
         model='gemini-1.5-flash',
         contents=[file, prompt])
     client.files.delete(name=file.name)
 
-    # remove only the json format from response
-    # TODO: Look for lib that converts to python dict
+    # strip response of unnecessary chars
+    # TODO: Find alternative lib to transform response to dict
     start = response.text.find('{')
     end = response.text.find('}')
-    json = response.text[start:end + 1]
-    print('Response:', json)
+    scores = response.text[start:end + 1].strip()
+    scores = literal_eval(scores) # convert to dict
 
-    return json
+    return scores
 
 
 def extract_scores_test():
