@@ -10,20 +10,19 @@ load_dotenv()
 def extract_scores(test=False):
     """Feeds image to genai model and extracts scores in json format."""
     if test:
-        extract_scores_test()
-        return
+        return extract_scores_test()
 
     print("Extracting scores...")
     # init gemini client
     client = genai.Client(api_key=os.getenv('GEMINI_KEY'))
 
     # TODO: refactor static directory
-    file = client.files.upload(file='/Users/justin/projects/score-tracker/backend/core/services/static/test_screenshot.png')
+    file = client.files.upload(file='/Users/justin/projects/score-tracker/backend/core/services/static/screenshot.jpg')
 
     # prompt gemini model to identify scores and output them in json
     prompt = ('These are screenshots from a competitive e-sports game. Each '
-              'team\'s score should appear at the top of each image. Output the scores as a python dictionary. Name the team on the left team_left and the team on the right team_right. Output the dictionary on one line with no formatting white space. Do not add extra characters. If no scoreboard is currently visible on the '
-              'image, return each team\'s score as Python data type None.')
+              'team\'s score should appear at the top of each image. Output the scores as a python dictionary. Name the team on the left team_left and the team on the right team_right. Output the dictionary on one line with no formatting white space. Do not add extra characters. If no scoreboard is currently visible at the '
+              'top, return each team\'s score as Python data type None.')
     response = client.models.generate_content(
         model='gemini-1.5-flash',
         contents=[file, prompt])
@@ -35,6 +34,7 @@ def extract_scores(test=False):
     end = response.text.find('}')
     scores = response.text[start:end + 1].strip()
     scores = literal_eval(scores) # convert to dict
+    print("Extracted scores: ", scores)
 
     return scores
 
@@ -43,4 +43,6 @@ def extract_scores_test():
     """Mock extraction method that returns random scores for each team."""
 
     print("Mock extracting scores...")
-    return { "teamLeft": random.randint(0,250), "teamRight": random.randint(0,250) }
+    scores = { 'team_left': random.randint(0,250), 'team_right': random.randint(0,250) }
+    print("Mock scores: ", scores)
+    return scores

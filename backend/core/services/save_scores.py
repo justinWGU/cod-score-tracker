@@ -6,8 +6,8 @@ def save_scores(match_id, scores: dict):
 
     print("Saving scores...")
 
-    scores_left = scores.get('teamLeft')
-    scores_right = scores.get('teamRight')
+    scores_left = scores.get('team_left')
+    scores_right = scores.get('team_right')
 
     match = Match.objects.get(id=match_id)
     match.leftTeamScore = scores_left

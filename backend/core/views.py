@@ -29,8 +29,10 @@ def update_scores_view(request: Request):
         print("updating scores")
         update_scores(test=test, match_id=match_id, live=live)
         return Response(status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response(data={'error': e}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Match.DoesNotExist:
+        return Response(data={'error': f'Not Match with id of {match_id} found. Please check id.'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return Response(data={'error': f'Unknown error occurred while trying to update scores'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['GET'])
@@ -41,7 +43,6 @@ def get_scores(request: Request):
         # convert match_id from query param to an int
         # TODO: add more specific error handling for None type
         match_id = request.query_params.get('id')
-#        print('match_id: ', match_id)
 
         match = Match.objects.get(id=match_id)
         serializer = MatchSerializer(match)
