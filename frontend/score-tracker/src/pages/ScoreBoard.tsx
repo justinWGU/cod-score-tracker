@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
 function ScoreBoard() {
-  const [leftTeamScore, setLeftTeamScore] = useState('');
-  const [rightTeamScore, setRightTeamScore] = useState('');
+  const [leftTeamScore, setLeftTeamScore] = useState(null);
+  const [rightTeamScore, setRightTeamScore] = useState(null);
 
   const getScores = async () => {
     console.log("Fetching...");
     try {
-      const response = await fetch('http://localhost:8000/api/get-scores/');
+      const response = await fetch('http://localhost:8000/api/get-scores/?id=1');
       const data = await response.json();
       const leftTeamScore = data.leftTeamScore;
       const rightTeamScore = data.rightTeamScore;
@@ -22,14 +22,14 @@ function ScoreBoard() {
   // continuously fetch scores every 10 secs
   useEffect( () => {
     console.log("Getting scores...");
-    setInterval(getScores, 5000)
+    setInterval(getScores, 2000);
   }, [])
   
   return(
-    <div>
-      {leftTeamScore? <h2>{leftTeamScore}</h2> : <h2>--</h2>}
-      <h2>HardPoint</h2>
-      {rightTeamScore? <h2>{rightTeamScore}</h2> : <h2>--</h2>}
+    <div className='flex gap-2 justify-center'>
+      {leftTeamScore !== null ? <h1>{leftTeamScore}</h1> : <h1>--</h1>}
+      <h1>HardPoint</h1>
+      {rightTeamScore !== null ? <h1>{rightTeamScore}</h1> : <h1>--</h1>}
     </div>
   );
 }
