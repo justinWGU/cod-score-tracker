@@ -18,7 +18,7 @@ export interface SeriesWins {
   right: number;
 }
 
-export interface GameDetails {
+export interface GameInfo {
   mode: string;
   map: string;
 }
