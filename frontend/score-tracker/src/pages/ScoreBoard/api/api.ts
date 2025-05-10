@@ -1,4 +1,4 @@
-import type { ScoresAPIData } from "./types.ts";
+import type { ScoresAPIData } from "../types.ts";
 
 
 export const getScores = async (id: number): Promise<ScoresAPIData> => {
