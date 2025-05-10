@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type {Scores, Teams, SeriesWins, GameInfo, ScoresAPIData} from './types.ts';
-import { getScores } from './api.ts';
+import { getScores } from './api/api.ts';
 import TeamPanel from './TeamPanel/TeamPanel.tsx';
 import GameDetails from './GameDetails/GameDetails.tsx';
 
