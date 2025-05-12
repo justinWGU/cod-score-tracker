@@ -13,20 +13,19 @@ def extract_scores(test=False):
         return extract_scores_test()
 
     print("Extracting scores...")
-    # init gemini client
-    client = genai.Client(api_key=os.getenv('GEMINI_KEY'))
 
-    # TODO: refactor static directory
-    file = client.files.upload(file='/Users/justin/projects/score-tracker/backend/core/services/static/screenshot.jpg')
+    file = '/Users/justin/projects/score-tracker/backend/core/services/static/screenshot.jpg'
 
-    # prompt gemini model to identify scores and output them in json
     prompt = ('These are screenshots from a competitive e-sports game. Each '
               'team\'s score should appear at the top of each image. Output the scores as a python dictionary. Name the team on the left team_left and the team on the right team_right. Output the dictionary on one line with no formatting white space. Do not add extra characters. If no scoreboard is currently visible at the '
               'top, return each team\'s score as Python data type None.')
-    response = client.models.generate_content(
-        model='gemini-1.5-flash',
-        contents=[file, prompt])
-    client.files.delete(name=file.name)
+
+    try:
+        response = get_response(file, prompt, 'gemini-1.5-flash')
+    except Exception as e:
+        print(f'Exception occurred in extract_scores: {e}')
+        print('Switching to back up model.')
+        response = get_response(file, prompt, 'gemini-2.0-flash-lite')
 
     # strip response of unnecessary chars
     # TODO: Find alternative lib to transform response to dict
@@ -37,6 +36,23 @@ def extract_scores(test=False):
     print("Extracted scores: ", scores)
 
     return scores
+
+
+def get_response(file, prompt, model):
+    """Gets & returns gemini response given prompt, image, and model name."""
+
+    # init gemini client
+    client = genai.Client(api_key=os.getenv('GEMINI_KEY'))
+
+    file = client.files.upload(file=file)
+
+    response = client.models.generate_content(
+        model=model,
+        contents=[file, prompt])
+
+    client.files.delete(name=file.name)
+
+    return response
 
 
 def extract_scores_test():
