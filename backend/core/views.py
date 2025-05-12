@@ -31,7 +31,8 @@ def update_scores_view(request: Request):
         return Response(status=status.HTTP_200_OK)
     except Match.DoesNotExist:
         return Response(data={'error': f'Not Match with id of {match_id} found. Please check id.'}, status=status.HTTP_404_NOT_FOUND)
-    except Exception:
+    except Exception as e:
+        print(f"Unknown error thrown by update_scores_view: {e}")
         return Response(data={'error': f'Unknown error occurred while trying to update scores'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
