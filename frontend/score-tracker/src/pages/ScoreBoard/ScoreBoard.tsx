@@ -7,7 +7,7 @@ import GameDetails from './GameDetails/GameDetails.tsx';
 function ScoreBoard() {
   const [hasError, setHasError] = useState<boolean>(false);
   const [scores, setScores] = useState<Scores>({left: 150, right: 200});
-  const [teams, setTeams] = useState<Teams>({left: 'Optic Gaming', right: 'Faze Clan'});
+  const [teams, setTeams] = useState<Teams>({left: 'optic', right: 'faze'});
   const [seriesWins, setSeriesWins] = useState<SeriesWins>({left: 2, right: 1});
   const [gameDetails, setGameDetails] = useState<GameInfo>({mode: 'Hardpoint', map: 'Protocol'});
 
@@ -23,7 +23,7 @@ function ScoreBoard() {
           setHasError(true);
           console.error(err);
       }
-    }, 2000);
+    }, 200000);
     return () => clearInterval(interval);
   }, []);
   
@@ -35,7 +35,7 @@ function ScoreBoard() {
     );
   } else {
     return(
-      <div className='bg-white shadow-2xl rounded-2xl p-5 w-xl min-h-40 flex gap-2 justify-center items-center border-2 border-gray-500'>
+      <div className='p-5 flex gap-2 '>
         <TeamPanel team={teams.left} score={scores.left}/>
         <GameDetails winsLeft={seriesWins.left} winsRight={seriesWins.right} mode={gameDetails.mode}/>
         <TeamPanel team={teams.right} score={scores.right}/>

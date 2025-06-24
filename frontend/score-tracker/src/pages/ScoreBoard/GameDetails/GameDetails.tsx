@@ -6,13 +6,13 @@ interface GameDetailsProps {
 
 function GameDetails({winsLeft, winsRight, mode}: GameDetailsProps) {
  return (
-  <div className="rounded-2xl p-3 border-2 border-gray-600">
-    <div className='text-center'>
-        <span className='inline'>{winsLeft}</span>
-        <div className='pr-1 pl-1 inline'>-</div>
-        <h1 className='inline'>{winsRight}</h1>
-        <h1 className=''>{mode}</h1>
+  <div className="flex flex-col items-center size-60 rounded-2xl p-3 border-2 border-black-600">
+    <div className="border-2 border-black-600 rounded-full w-[200px] text-center text-[30px]">
+      <span>{winsLeft}</span>
+      <span> - </span>
+      <span>{winsRight}</span>
     </div>
+    <div className='text-[30px]'>{mode}</div>
   </div>
  ); 
 } export default GameDetails;
