@@ -31,7 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,6 +43,7 @@ INSTALLED_APPS = [
     "core.apps.CoreConfig",
     "rest_framework",
     "corsheaders",
+    "background_task"
 ]
 
 MIDDLEWARE = [
