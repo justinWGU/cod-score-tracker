@@ -1,0 +1,4 @@
+.env
+core/services/static/test_no_score_screenshot.png
+core/services/static/screenshot.jpg
+db.sqlite3

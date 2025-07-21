@@ -2,7 +2,3 @@
 .idea
 .venv
 **__pycache__**
-.env
-backend/core/services/static/test_no_score_screenshot.png
-backend/core/services/static/screenshot.jpg
-backend/db.sqlite3
