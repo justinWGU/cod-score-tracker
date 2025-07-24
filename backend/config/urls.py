@@ -17,8 +17,12 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path(os.getenv('ADMIN_URL'), admin.site.urls),
     path('api/', include("core.urls")),
 ]

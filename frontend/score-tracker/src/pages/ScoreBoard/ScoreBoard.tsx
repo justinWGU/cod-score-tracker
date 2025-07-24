@@ -23,7 +23,7 @@ function ScoreBoard() {
           setHasError(true);
           console.error(err);
       }
-    }, 200000);
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
   
