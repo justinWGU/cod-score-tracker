@@ -1,5 +1,5 @@
 from background_task import background
-from .services import update_scores
+from .services.update_scores import update_scores
 
 
 @background()
