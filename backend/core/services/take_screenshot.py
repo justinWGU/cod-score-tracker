@@ -2,6 +2,7 @@ import subprocess
 import cv2
 import os
 from dotenv import load_dotenv
+import yt_dlp
 
 load_dotenv()
 
