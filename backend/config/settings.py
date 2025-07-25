@@ -13,14 +13,14 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-CSRF_TRUSTED_ORIGINS = ['https://codscoretracker.pythonanywhere.com/']
+CSRF_TRUSTED_ORIGINS = ['https://codscoretracker.netlify.app/']
 
 ALLOWED_HOSTS = [
     'localhost:8000', 
     'localhost',
     '127.0.0.1:8000',
     '127.0.0.1',
-    'codscoretracker.pythonanywhere.com',
+    'https://codscoretracker.netlify.app/',
 ]
 
 # Application definition
