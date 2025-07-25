@@ -7,9 +7,9 @@ import GameDetails from './GameDetails/GameDetails.tsx';
 function ScoreBoard() {
   const [hasError, setHasError] = useState<boolean>(false);
   const [scores, setScores] = useState<Scores>({left: 150, right: 200});
-  const [teams, setTeams] = useState<Teams>({left: 'optic', right: 'faze'});
-  const [seriesWins, setSeriesWins] = useState<SeriesWins>({left: 2, right: 1});
-  const [gameDetails, setGameDetails] = useState<GameInfo>({mode: 'Hardpoint', map: 'Protocol'});
+  const [teams] = useState<Teams>({left: 'optic', right: 'faze'});
+  const [seriesWins] = useState<SeriesWins>({left: 2, right: 1});
+  const [gameDetails] = useState<GameInfo>({mode: 'Hardpoint', map: 'Protocol'});
 
 
   // continuously fetch scores every 10 secs
@@ -23,7 +23,7 @@ function ScoreBoard() {
           setHasError(true);
           console.error(err);
       }
-    }, 1000);
+    }, 10000000);
     return () => clearInterval(interval);
   }, []);
   
