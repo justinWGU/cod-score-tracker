@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-CSRF_TRUSTED_ORIGINS = ['https://codscoretracker.netlify.app/']
+CSRF_TRUSTED_ORIGINS = ['https://codscoretracker.netlify.app']
 
 ALLOWED_HOSTS = [
     'localhost:8000', 
