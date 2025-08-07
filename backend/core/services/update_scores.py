@@ -1,75 +1,63 @@
 import os
 import time
-from core.services.take_screenshot import take_screenshot, get_url
+import subprocess
+from core.services.take_screenshot import take_screenshot
 from core.services.extract_scores import extract_scores
-from core.services.save_scores import save_scores
+from core.models import Match
+from core.services.get_url import get_url
 
 
-# TODO: add docstrings for parameters
-def continuously_update_from_stream(test, match_id, direct_stream_url, wait_time=10):
-    """Continuously take a SS from a stream, extract scores, and save them."""
+def save_scores(match_id, scores: dict):
+    """ Saves updated match scores to DB."""
 
-    while True:
-        update_from_stream(test, match_id, direct_stream_url, wait_time)
+    print("Saving scores...")
 
+    scores_left = scores.get('team_left')
+    scores_right = scores.get('team_right')
 
-def continuously_update_from_video(test, match_id, direct_stream_url, current_frame=0, wait_time=10, increment=60):
-    """Continuously take a SS from a video, save scores, and increment frame pos"""
+    match = Match.objects.get(id=match_id)
+    match.leftTeamScore = scores_left
+    match.rightTeamScore = scores_right
+    match.save()
 
-    current_frame = current_frame
-    while True:
-        update_from_video(test, match_id, direct_stream_url, current_frame, wait_time)
-        current_frame += increment
+    print("Scores saved.")
+    
 
-
-def update_from_stream(test, match_id, direct_stream_url, wait_time=10):
-
-    print("Getting scores from a stream...")
-
-    # take a SS at the current frame of the livestream
-    take_screenshot(direct_stream_url)
-
-    # obtain scores from stream
-    scores = extract_scores(test=test)
-
-    save_scores(match_id=match_id, scores=scores)
-
-    time.sleep(wait_time)
-
-
-def update_from_video(test, match_id, direct_stream_url, current_frame=0, wait_time=10):
-
-    print("Getting scores from a video...")
-
-    # take a SS given the frame pos
-    take_screenshot(direct_stream_url, current_frame)
-
-    # produce random scores if test=true
-    scores = extract_scores(test)
-    print("scores ", scores)
-
-    # prevent None values from being saved into
-    left = scores.get('team_left')
-    right = scores.get('team_right')
-    if left is None or right is None:
+def update_scores(match_id, test=False):
+    """ Extracts scores from a stream or video and updates the db. """
+    
+    try:
+        youtube_live_url = os.getenv("STREAM_URL")
+        direct_stream_url = get_url(youtube_live_url)
+    except subprocess.CalledProcessError as e:
+        print("Failed to extract direct URL:", e.stderr)
+        return    
+    except Exception as e:
+        print(f'Could not resolve direct url: {e}')
         return
-    else:
-        save_scores(match_id, scores)
+    
+    curr_frame = 1000
 
-    time.sleep(wait_time)
+    while True:
+        # take a ss from pre-recorded video and generate random scores if testing
+        try:
+            if not test:
+                take_screenshot(direct_stream_url)
+            else:
+                take_screenshot(direct_stream_url, curr_frame)
+                curr_frame += 60
 
+            scores = extract_scores(test)            
+            save_scores(match_id, scores)
 
-def update_scores(match_id, test=False, live=True):
-    """
-    Every set interval, take a new screenshot, extract scores from it, and save new
-    scores to DB.
-    """
-    print("called update scores")
-    # Get YT URL, extract it, & call appropriate method
-    youtube_live_url = os.getenv("STREAM_URL")
-    direct_stream_url = get_url(youtube_live_url)
-
-    if live:
-        continuously_update_from_stream(test, match_id, direct_stream_url)
-    else:
-        continuously_update_from_video(test, match_id, direct_stream_url, 1000, 5, 60)
+            time.sleep(5)
+            
+        except (ValueError, TypeError) as e:
+            print(f'Scores did not return as ints in extract_scores: {e}')
+            continue
+        except Match.DoesNotExist as e:
+            print(f'No match with id {match_id} found: {e}')
+            return
+        except Exception as e:
+            print(f'Unknown error ocurred during update_scores loop: {e}')
+            return
