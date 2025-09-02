@@ -1,7 +1,15 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import GameDetails from '../GameDetails';
-import { test } from 'vitest';
+import { expect, test } from 'vitest';
 
 test('renders without error', () => {
-  render(<GameDetails winsLeft={0} winsRight={1} mode='Search and Destroy'/>);
+  render(<GameDetails winsLeft={50} winsRight={19} mode='Search and Destroy'/>);
+
+  const winsLeft = screen.getByText('50');
+  const winsRight = screen.getByText('19');
+  const mode = screen.getByText('Search and Destroy');
+
+  expect(winsLeft).toBeInTheDocument();
+  expect(winsRight).toBeInTheDocument();
+  expect(mode).toBeInTheDocument();
 });

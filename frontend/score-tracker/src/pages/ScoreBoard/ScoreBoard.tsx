@@ -8,7 +8,7 @@ function ScoreBoard() {
   const [hasError, setHasError] = useState<boolean>(false);
   const [scores, setScores] = useState<Scores>({left: 150, right: 200});
   const [teams] = useState<Teams>({left: 'optic', right: 'faze'});
-  const [seriesWins] = useState<SeriesWins>({left: 2, right: 1});
+  const [seriesWins] = useState<SeriesWins>({left: 0, right: 0});
   const [gameDetails] = useState<GameInfo>({mode: 'Hardpoint', map: 'Protocol'});
 
 
@@ -16,7 +16,13 @@ function ScoreBoard() {
   useEffect( () => {
     const interval = setInterval( async () => {
       try {
-        const data: ScoresAPIData = await getScores(1);
+        const response = await getScores(1);
+        const data: ScoresAPIData = await response.json();
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
         setScores({left: data.leftTeamScore, right: data.rightTeamScore});
         // more state will be set here
       } catch (err) {
@@ -35,10 +41,13 @@ function ScoreBoard() {
     );
   } else {
     return(
-      <div className='p-5 flex gap-2 '>
-        <TeamPanel team={teams.left} score={scores.left}/>
-        <GameDetails winsLeft={seriesWins.left} winsRight={seriesWins.right} mode={gameDetails.mode}/>
-        <TeamPanel team={teams.right} score={scores.right}/>
+      <div className='flex flex-col min-h-screen justify-center items-center bg-gray-900 text-[#EAEAF2]'>
+        <h1 className='text-6xl'>Call of Duty Score Tracker</h1>
+        <div className='p-5 mt-8 flex gap-2 '>
+          <TeamPanel team={teams.left} score={scores.left}/>
+          <GameDetails winsLeft={seriesWins.left} winsRight={seriesWins.right} mode={gameDetails.mode} map={gameDetails.map}/>
+          <TeamPanel team={teams.right} score={scores.right}/>
+        </div>
       </div>
     );
   }
