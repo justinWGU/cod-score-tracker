@@ -11,4 +11,3 @@ test('renders ScoreBoard without crashing', () => {
 // on api error, updates state and renders err message
 
 // on api success, does not update state and renders normally
-
