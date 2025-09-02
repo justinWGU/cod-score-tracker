@@ -22,6 +22,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1:8000',
     '127.0.0.1',
     'codscoretracker.pythonanywhere.com',
+    'cod-score-tracker.onrender.com',
 ]
 
 # Application definition
