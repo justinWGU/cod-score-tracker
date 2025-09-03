@@ -33,7 +33,7 @@ function Landing() {
           </ul>
           <div className="flex">
             <a id="section-get-involved" href="https://github.com/justinWGU/cod-score-tracker" className="ml-0 m-5">Github</a>
-            <a className="m-5">Contact</a>
+            <a href="mailto:codscoretracker@gmail.com" className="m-5">Contact</a>
           </div>
       </div>
   );
