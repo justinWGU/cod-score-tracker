@@ -14,10 +14,10 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DEBUG = False
 
 CORS_ALLOWED_ORIGINS = [
-    'https://codscoretracker.netlify.app'
+    'https://codscoretracker.netlify.app',
+    'http://localhost:5173'
     ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://codscoretracker.netlify.app',
     'https://codscoretracker.netlify.app',
     'https://cod-score-tracker.onrender.com',
 ]

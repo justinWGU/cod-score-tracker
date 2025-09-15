@@ -17,14 +17,8 @@ BASE_MODEL = 'gemini-1.5-flash'
 FALLBACK_MODEL = 'gemini-2.0-flash-lite'
 
 
-def extract_scores(test):
+def extract_scores():
     """ Feeds image to genai model and extracts scores in json format. """
-    
-    if test:
-        print("Extracting mock scores...")
-        scores = { 'team_left': random.randint(0,250), 'team_right': random.randint(0,250) }
-        print("Mock scores: ", scores)
-        return scores
 
     print("Extracting scores...")
 
@@ -46,9 +40,8 @@ def extract_scores(test):
 
     return scores
 
-
 def get_response(file, PROMPT, model):
-    """ Returns gemini response given PROMPT, image, and model name.v"""
+    """ Returns gemini response given prompt, image, and model name.v"""
 
     client = genai.Client(api_key=os.getenv('GEMINI_KEY'))
     file = client.files.upload(file=file)
@@ -58,3 +51,12 @@ def get_response(file, PROMPT, model):
     client.files.delete(name=file.name)
 
     return response
+
+
+def gen_random_scores():
+    """ Generates and saves random scores to the DB. """
+
+    print("Extracting mock scores...")
+    scores = { 'team_left': random.randint(0,250), 'team_right': random.randint(0,250) }
+    print("Mock scores: ", scores)
+    return scores    

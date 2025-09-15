@@ -3,3 +3,4 @@ core/services/static/test_no_score_screenshot.png
 core/services/static/screenshot.jpg
 db.sqlite3
 config/dev_settings.py
+.idea

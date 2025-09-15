@@ -18,7 +18,7 @@ def take_screenshot(stream_url, frame=None, filename=DEFAULT_SCREENSHOT_PATH):
     # if a starting frame was given, set the camera to that frame.
     if frame:
         print(f'Setting capture frame to {frame}')
-        cap.set(propId=cv2.CAP_PROP_POS_FRAMES, value=frame)
+        cap.set(cv2.CAP_PROP_POS_MSEC, frame)
 
     ret, image = cap.read()
     cap.release()
