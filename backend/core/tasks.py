@@ -10,7 +10,7 @@ def update_scores_task():
   try:
     update_scores(1)
   except Exception as e:
-    print(f'Unknown error ocurred in update_scores_task: {e}')
+    print(f'Unknown error occurred in update_scores_task: {e}')
 
 @background()
 def update_rand_scores_task():

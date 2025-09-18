@@ -44,7 +44,7 @@ def update_scores(match_id):
             print(f'No match with id {match_id} found: {e}')
             return
         except Exception as e:
-            print(f'Unknown error ocurred during update_scores loop: {e}')
+            print(f'Unknown error occurred during update_scores loop: {e}')
             return
 
 def update_rand_scores():
