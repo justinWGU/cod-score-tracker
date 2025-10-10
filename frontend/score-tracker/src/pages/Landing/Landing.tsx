@@ -7,11 +7,11 @@ function Landing() {
   return (
       <div className="flex pl-15 pr-15 flex-col border-black border-4 bg-[#0a192f] text-white p-10 ">
         
-        <h1 className="text-4xl text-green-400">Call of Duty Score Tracker</h1>
+        <h1 className="text-4xl text-green-400">Call of Duty Score Tracker Landing Page</h1>
         <p className="mt-1">Live Call of Duty Scores Anytime, Anywhere</p>
         <div className="flex mt-2">
           <button className="mr-5 bg-blue-800 rounded-lg pr-6 pl-6 p-3 hover:cursor-pointer" onClick={() => navigate('/scoreboard')}>View Demo</button>
-          <a href="#section-get-involved" className=" rounded-lg pr-6 pl-6 p-3 border border-blue-800">Get Involved</a>
+          <a href="#get-involved" className=" rounded-lg pr-6 pl-6 p-3 border border-blue-800">Get Involved</a>
         </div>
         
         <h2 className="text-2xl mt-2">What is it?</h2>
@@ -32,7 +32,7 @@ function Landing() {
             <li>Gamers(testing, feedback, feature ideas)</li>
           </ul>
           <div className="flex">
-            <a id="section-get-involved" href="https://github.com/justinWGU/cod-score-tracker" className="ml-0 m-5">Github</a>
+            <a id="get-involved" href="https://github.com/justinWGU/cod-score-tracker" className="ml-0 m-5">GitHub</a>
             <a href="mailto:codscoretracker@gmail.com" className="m-5">Contact</a>
           </div>
       </div>
