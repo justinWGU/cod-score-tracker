@@ -11,18 +11,16 @@ function ScoreBoard() {
   const [seriesWins] = useState<SeriesWins>({left: 0, right: 0});
   const [gameDetails] = useState<GameInfo>({mode: 'Hardpoint', map: 'Protocol'});
 
-
-  // continuously fetch scores every 10 secs
+  // continuously fetch scores every X secs
   useEffect( () => {
     const interval = setInterval( async () => {
       try {
         const response = await getScores(1);
         const data: ScoresAPIData = await response.json();
-
+        setHasError(false); 
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
-
         setScores({left: data.leftTeamScore, right: data.rightTeamScore});
         // more state will be set here
       } catch (err) {
@@ -36,7 +34,7 @@ function ScoreBoard() {
   if (hasError) {
     return (
       <div className='bg-white shadow-2xl rounded-2xl p-5 w-xl min-h-40 flex gap-2 justify-center items-center border-2 border-gray-500'>
-        <p className='text-red-600'>Error occurred fetching scores!</p>
+        <p className='text-red-600'>Error occurred fetching scores. Retrying...</p>
       </div>
     );
   } else {
@@ -46,7 +44,7 @@ function ScoreBoard() {
         <div className='p-5 mt-8 flex gap-2 '>
           <TeamPanel team={teams.left} score={scores.left}/>
           <GameDetails winsLeft={seriesWins.left} winsRight={seriesWins.right} mode={gameDetails.mode} map={gameDetails.map}/>
-          <TeamPanel team={teams.right} score={scores.right}/>
+          <TeamPanel team={'optic'} score={scores.right}/>
         </div>
       </div>
     );
