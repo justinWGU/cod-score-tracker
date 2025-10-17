@@ -44,7 +44,7 @@ function ScoreBoard() {
         <div className='p-5 mt-8 flex gap-2 '>
           <TeamPanel team={teams.left} score={scores.left}/>
           <GameDetails winsLeft={seriesWins.left} winsRight={seriesWins.right} mode={gameDetails.mode} map={gameDetails.map}/>
-          <TeamPanel team={'optic'} score={scores.right}/>
+          <TeamPanel team={teams.right} score={scores.right}/>
         </div>
       </div>
     );
